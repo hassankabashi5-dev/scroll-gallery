@@ -19,11 +19,10 @@ jobs:
           cache: true
       - name: Build
         working-directory: app
-        run: |
-          flutter create --org sd.scrollgallery --project-name scroll_gallery --platforms=android .
-          python3 tools/patch_manifest.py
-          flutter pub get
-          flutter build apk --release
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        run: bash tools/build.sh
       - uses: actions/upload-artifact@v4
         with:
           name: scroll-gallery-apk
